@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { signupAPICall } from "../services/AuthService";
+import { Navigate, useNavigate } from "react-router-dom";
 const SignupComponent = () => {
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const navigator = useNavigate();
   function handleSignupForm(e) {
     e.preventDefault();
     const signup = { name, username, email, password };
@@ -13,6 +14,7 @@ const SignupComponent = () => {
     signupAPICall(signup)
       .then((response) => {
         console.log(response.data);
+        navigator("/login");
       })
       .catch((error) => {
         console.error(error);

@@ -12,12 +12,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HelpRequestAPIException.class)
     public ResponseEntity<ErrorDetails> handleTodoAPIException(HelpRequestAPIException exception,
                                                                WebRequest webRequest){
-//
-//        ErrorDetails errorDetails = new ErrorDetails(
-//                LocalDateTime.now(),
-//                exception.getMessage(),
-//                webRequest.getDescription(false)
-//        );
     	ErrorDetails errorDetails = new ErrorDetails( LocalDateTime.now(),
               exception.getMessage(),
               webRequest.getDescription(false));

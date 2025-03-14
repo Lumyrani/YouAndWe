@@ -36,22 +36,10 @@ const HeaderComponent = () => {
             </button>
             <div className="collapse navbar-collapse" id="navbarNavDropDown">
               <ul className="navbar-nav">
-                {/* <li className="nav-item">
-                  <a className="nav-link" href="/">
-                    Home
-                  </a>
-                </li> */}
-
-                {/* <li className="nav-item">
-                  <a className="nav-link" href="/help">
-                    {" "}
-                    Request any help?
-                  </a>
-                </li> */}
                 {isAuth && (
                   <li className="nav-item">
                     <NavLink to="/helpRequests" className="nav-link">
-                      My Requests
+                      Requests
                     </NavLink>
                   </li>
                 )}

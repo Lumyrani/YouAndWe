@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import {
   loginAPICall,
   saveLoggedInUser,
@@ -29,11 +30,12 @@ const LoginComponent = () => {
         const token = "Bearer " + response.data.accessToken;
 
         const role = response.data.role;
-
+        console.log("role:", role);
         storeToken(token);
 
         saveLoggedInUser(username, role);
-        navigator("/helpRequests");
+
+        navigator("/helpRequest");
 
         window.location.reload(false);
       })

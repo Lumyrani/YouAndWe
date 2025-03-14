@@ -8,7 +8,6 @@ const FooterComponent = () => {
           Copyrights reserved at &copy; {new Date().getFullYear()} UNV - All
           rights reserved.
         </p>
-        {/* <p className="text-center">Copyrights reserved at 2025-26 by UNV</p> */}
       </footer>
     </div>
   );

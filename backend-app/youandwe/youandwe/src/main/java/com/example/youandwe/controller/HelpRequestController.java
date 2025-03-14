@@ -12,7 +12,7 @@ import com.example.youandwe.dto.HelpRequestDto;
 import com.example.youandwe.service.HelpRequestService;
 
 import java.util.List;
-@CrossOrigin("*")
+@CrossOrigin(origins = { "*" })
 @RestController
 @RequestMapping("api/helpRequests")
 @AllArgsConstructor
@@ -21,7 +21,7 @@ public class HelpRequestController {
 
     // Build Add HelpRequest REST API
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PostMapping
     public ResponseEntity<HelpRequestDto> addHelpRequest(@RequestBody HelpRequestDto helpRequestDto){
 
@@ -33,13 +33,13 @@ public class HelpRequestController {
     // Build Get HelpRequest REST API
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("{id}")
-    public ResponseEntity<HelpRequestDto> getHelpRequest(@PathVariable("id") Long todoId){
-    	HelpRequestDto HelpRequestDto = helpRequestService.getHelpRequest(todoId);
+    public ResponseEntity<HelpRequestDto> getHelpRequest(@PathVariable("id") Long helpRequestId){
+    	HelpRequestDto HelpRequestDto = helpRequestService.getHelpRequest(helpRequestId);
         return new ResponseEntity<>(HelpRequestDto, HttpStatus.OK);
     }
 
     // Build Get All HelpRequests REST API
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping
     public ResponseEntity<List<HelpRequestDto>> getAllHelpRequests(){
         List<HelpRequestDto> helpRequests = helpRequestService.getAllHelpRequests();
@@ -48,15 +48,15 @@ public class HelpRequestController {
     }
 
     // Build Update HelpRequest REST API
-    @PreAuthorize("hasRole('ADMIN','USER)")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PutMapping("{id}")
-    public ResponseEntity<HelpRequestDto> updateTodo(@RequestBody HelpRequestDto helpRequestDto, @PathVariable("id") Long helpRequestId){
+    public ResponseEntity<HelpRequestDto> updateHelpRequest(@RequestBody HelpRequestDto helpRequestDto, @PathVariable("id") Long helpRequestId){
     	HelpRequestDto updatedHelpRequest = helpRequestService.updateHelpRequest(helpRequestDto, helpRequestId);
         return ResponseEntity.ok(updatedHelpRequest);
     }
 
     // Build Delete HelpRequest REST API
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @DeleteMapping("{id}")
     public ResponseEntity<String> deleteHelpRequest(@PathVariable("id") Long helpRequestId){
         helpRequestService.deleteHelpRequest(helpRequestId);
@@ -65,4 +65,3 @@ public class HelpRequestController {
 
   
 }
-

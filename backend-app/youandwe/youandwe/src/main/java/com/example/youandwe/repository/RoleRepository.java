@@ -7,5 +7,6 @@ import com.example.youandwe.entity.Role;
 public interface RoleRepository extends JpaRepository<Role, Long>{
 	
 	Role findByName(String name);
+//	Role findBYEmail(String email);
 
 }

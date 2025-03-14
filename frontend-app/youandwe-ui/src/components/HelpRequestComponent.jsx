@@ -5,36 +5,31 @@ import {
   updateHelpRequest,
 } from "../services/HelpRequestService";
 import { useNavigate, useParams } from "react-router-dom";
+import { getLoggedInUser } from "../services/AuthService";
 const HelpRequestComponent = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const loggedUsername = getLoggedInUser();
   const [help, setHelp] = useState("");
+  const [username, setUsername] = useState(loggedUsername);
   const [details, setDetails] = useState("");
-
-  // function handleHelpRequestForm(e) {
-  //     e.preventDefault();
-  //     const helpRequest = { name, email, help, details }
-  //     console.log(helpRequest);
-  // }
   const navigate = useNavigate();
   const { id } = useParams();
 
+  // const username = loggedUsername;
   function saveOrUpdateHelpRequest(e) {
     e.preventDefault();
-
-    const helpRequest = { name, email, help, details };
+    const helpRequest = { id, username, help, details };
     console.log(helpRequest);
-
     if (id) {
       updateHelpRequest(id, helpRequest)
         .then((response) => {
-          console.log(response.data);
+          console.log(response);
           navigate("/helpRequests");
         })
         .catch((error) => {
           console.error(error);
         });
-    } else {
+    } else if (id === undefined || username === loggedUsername) {
+      console.log("hi");
       saveHelpRequest(helpRequest)
         .then((response) => {
           console.log(response.data);
@@ -43,6 +38,8 @@ const HelpRequestComponent = () => {
         .catch((error) => {
           console.error(error);
         });
+    } else {
+      console.log("error");
     }
   }
 
@@ -58,9 +55,8 @@ const HelpRequestComponent = () => {
     if (id) {
       getHelpRequest(id)
         .then((response) => {
-          console.log(response.data);
-          setName(response.data.name);
-          setEmail(response.data.email);
+          console.log("t:", response.data);
+          setUsername(response.data.username);
           setHelp(response.data.help);
           setDetails(response.data.details);
         })
@@ -79,34 +75,19 @@ const HelpRequestComponent = () => {
           <div className="card-body">
             <form>
               <div className="row mb-3">
-                <label className="col-md-3 control-label">Name</label>
+                <label className="col-md-3 control-label">User Name</label>
                 <div className="col-md-9">
                   <input
                     type="text"
-                    name="name"
+                    name="username"
                     className="form-control"
-                    placeholder="Enter your name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  ></input>
-                </div>
-              </div>
-
-              <div className="row mb-3">
-                <label className="col-md-3 control-label">Email</label>
-                <div className="col-md-9">
-                  <input
-                    type="email"
-                    name="email"
-                    className="form-control"
-                    placeholder="Enter your email address"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={username}
+                    readOnly
                   ></input>
                 </div>
               </div>
               <div className="row mb-3">
-                <label className="col-md-6 control-label">
+                <label className="col-md-9 control-label">
                   What's the help you needed?
                 </label>
                 <div className="col-md-12">
@@ -136,12 +117,14 @@ const HelpRequestComponent = () => {
                 </div>
               </div>
               <div className="form-group mb-3">
+                {/* {isAdmin && ( */}
                 <button
                   className="btn btn-primary"
                   onClick={(e) => saveOrUpdateHelpRequest(e)}
                 >
                   Submit
                 </button>
+                {/* )} */}
               </div>
             </form>
           </div>

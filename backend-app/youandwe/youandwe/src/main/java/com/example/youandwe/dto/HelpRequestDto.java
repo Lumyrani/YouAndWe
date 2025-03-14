@@ -13,8 +13,8 @@ public class HelpRequestDto {
 
 
     private Long id;
-    private String name;
-    private String email;
+    private String username;;
+//    private String email;
     private String help;
     private String details;
 }

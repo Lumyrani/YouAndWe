@@ -42,7 +42,7 @@ public class HelpRequestServiceImpl implements HelpRequestService {
     public HelpRequestDto getHelpRequest(Long id) {
 
     	HelpRequest helpRequest = helpRequestRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Todo not found with id:" + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Help Request not found with id:" + id));
 
         return modelMapper.map(helpRequest, HelpRequestDto.class);
     }
@@ -60,22 +60,22 @@ public class HelpRequestServiceImpl implements HelpRequestService {
     public HelpRequestDto updateHelpRequest(HelpRequestDto helpRequestDto, Long id) {
 
     	HelpRequest helpRequest = helpRequestRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Todo not found with id : " + id));
-    	helpRequest.setName(helpRequestDto.getName());
-    	helpRequest.setEmail(helpRequestDto.getEmail());
+                .orElseThrow(() -> new ResourceNotFoundException("Help Request not found with id : " + id));
+    	helpRequest.setUsername(helpRequestDto.getUsername());
+//    	helpRequest.setEmail(helpRequestDto.getEmail());
          helpRequest.setHelp(helpRequestDto.getHelp());
          helpRequest.setDetails(helpRequestDto.getDetails());
          
-         HelpRequest updatedTodo = helpRequestRepository.save(helpRequest);
+         HelpRequest updatedHelpRequest = helpRequestRepository.save(helpRequest);
 
-        return modelMapper.map(updatedTodo, HelpRequestDto.class);
+        return modelMapper.map(updatedHelpRequest, HelpRequestDto.class);
     }
 
     @Override
     public void deleteHelpRequest(Long id) {
 
         HelpRequest helpRequest = helpRequestRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Todo not found with id : " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Help Request not found with id : " + id));
 
         helpRequestRepository.deleteById(id);
     }

@@ -30,7 +30,7 @@ import com.example.youandwe.security.JwtAuthenticationFilter;
 @AllArgsConstructor
 public class SpringSecurityConfig {
 
-    private UserDetailsService userDetailsService;
+    
 
     private JwtAuthenticationEntryPoint authenticationEntryPoint;
 
@@ -48,7 +48,7 @@ public class SpringSecurityConfig {
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((authorize) -> {
 //                    authorize.requestMatchers(HttpMethod.POST, "/api/**").hasRole("ADMIN");
-//                    authorize.requestMatchers(HttpMethod.PUT, "/api/**").hasRole("ADMIN");
+//                    authorize.requestMatchers(HttpMethod.PUT, "/api/**").hasAnyRole("ADMIN", "USER");
 //                    authorize.requestMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN");
 //                    authorize.requestMatchers(HttpMethod.GET, "/api/**").hasAnyRole("ADMIN", "USER");
 //                    authorize.requestMatchers(HttpMethod.PATCH, "/api/**").hasAnyRole("ADMIN", "USER");
@@ -74,8 +74,8 @@ public class SpringSecurityConfig {
 //    @Bean
 //    public UserDetailsService userDetailsService(){
 //
-//        UserDetails ramesh = User.builder()
-//                .username("ramesh")
+//        UserDetails tom = User.builder()
+//                .username("tom")
 //                .password(passwordEncoder().encode("password"))
 //                .roles("USER")
 //                .build();
@@ -86,6 +86,6 @@ public class SpringSecurityConfig {
 //                .roles("ADMIN")
 //                .build();
 //
-//        return new InMemoryUserDetailsManager(ramesh, admin);
+//        return new InMemoryUserDetailsManager(tom, admin);
 //    }
 }

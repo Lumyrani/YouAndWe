@@ -13,34 +13,72 @@ const HelpRequestComponent = () => {
   const [details, setDetails] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
+  const [errors, setErrors] = useState({
+    username: "",
+    help: "",
+    details: "",
+  });
 
   // const username = loggedUsername;
   function saveOrUpdateHelpRequest(e) {
     e.preventDefault();
-    const helpRequest = { id, username, help, details };
-    console.log(helpRequest);
-    if (id) {
-      updateHelpRequest(id, helpRequest)
-        .then((response) => {
-          console.log(response);
-          navigate("/helpRequests");
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    } else if (id === undefined || username === loggedUsername) {
-      console.log("hi");
-      saveHelpRequest(helpRequest)
-        .then((response) => {
-          console.log(response.data);
-          navigate("/helpRequests");
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    } else {
-      console.log("error");
+
+    if (validateForm()) {
+      const helpRequest = { id, username, help, details };
+      console.log(helpRequest);
+      if (id) {
+        updateHelpRequest(id, helpRequest)
+          .then((response) => {
+            console.log(response);
+            navigate("/helpRequests");
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      } else if (id === undefined || username === loggedUsername) {
+        console.log("hi");
+        saveHelpRequest(helpRequest)
+          .then((response) => {
+            console.log(response.data);
+            navigate("/helpRequests");
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      } else {
+        console.log("error");
+      }
     }
+  }
+  function validateForm() {
+    let valid = true;
+
+    const errorsCopy = { ...errors };
+
+    if (username.trim()) {
+      errorsCopy.username = "";
+    } else {
+      errorsCopy.username = "User name is required";
+      valid = false;
+    }
+
+    if (help.trim()) {
+      errorsCopy.help = "";
+    } else {
+      errorsCopy.help = "please give your help request";
+      valid = false;
+    }
+
+    if (details.trim()) {
+      errorsCopy.details = "";
+    } else {
+      errorsCopy.details = "Please describe your help request";
+      valid = false;
+    }
+
+    setErrors(errorsCopy);
+
+    return valid;
   }
 
   function pageTitle() {
@@ -80,10 +118,16 @@ const HelpRequestComponent = () => {
                   <input
                     type="text"
                     name="username"
-                    className="form-control"
+                    className={`form-control ${
+                      errors.username ? "is-invalid" : ""
+                    }`}
                     value={username}
                     readOnly
                   ></input>
+
+                  {errors.username && (
+                    <div className="invalid-feedback"> {errors.username} </div>
+                  )}
                 </div>
               </div>
               <div className="row mb-3">
@@ -94,11 +138,16 @@ const HelpRequestComponent = () => {
                   <input
                     type="text"
                     name="help"
-                    className="form-control"
+                    className={`form-control ${
+                      errors.help ? "is-invalid" : ""
+                    }`}
                     placeholder="Enter your issue"
                     value={help}
                     onChange={(e) => setHelp(e.target.value)}
                   ></input>
+                  {errors.help && (
+                    <div className="invalid-feedback"> {errors.help} </div>
+                  )}
                 </div>
               </div>
               <div className="row mb-3">
@@ -109,11 +158,16 @@ const HelpRequestComponent = () => {
                   <textarea
                     type="text"
                     name="details"
-                    className="form-control"
+                    className={`form-control ${
+                      errors.details ? "is-invalid" : ""
+                    }`}
                     placeholder="Please provide more details"
                     value={details}
                     onChange={(e) => setDetails(e.target.value)}
                   ></textarea>
+                  {errors.details && (
+                    <div className="invalid-feedback"> {errors.details} </div>
+                  )}
                 </div>
               </div>
               <div className="form-group mb-3">

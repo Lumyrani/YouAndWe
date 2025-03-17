@@ -9,6 +9,10 @@ import {
 const LoginComponent = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({
+    username: "",
+    password: "",
+  });
 
   // function handleLoginForm(e) {
   //   e.preventDefault();
@@ -22,26 +26,48 @@ const LoginComponent = () => {
   async function handleLoginForm(e) {
     e.preventDefault();
 
-    await loginAPICall(username, password)
-      .then((response) => {
-        console.log(response.data);
+    if (validateForm()) {
+      await loginAPICall(username, password)
+        .then((response) => {
+          console.log(response.data);
 
-        //const token = 'Basic ' + window.btoa(username + ":" + password);
-        const token = "Bearer " + response.data.accessToken;
+          //const token = 'Basic ' + window.btoa(username + ":" + password);
+          const token = "Bearer " + response.data.accessToken;
 
-        const role = response.data.role;
-        console.log("role:", role);
-        storeToken(token);
+          const role = response.data.role;
+          console.log("role:", role);
+          storeToken(token);
 
-        saveLoggedInUser(username, role);
+          saveLoggedInUser(username, role);
 
-        navigator("/helpRequest");
+          navigator("/helpRequest");
 
-        window.location.reload(false);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+          window.location.reload(false);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }
+  function validateForm() {
+    let valid = true;
+
+    const errorsCopy = { ...errors };
+    if (username.trim()) {
+      errorsCopy.username = "";
+    } else {
+      errorsCopy.username = "User name is required";
+      valid = false;
+    }
+
+    if (password.trim()) {
+      errorsCopy.password = "";
+    } else {
+      errorsCopy.password = "Password is required";
+      valid = false;
+    }
+    setErrors(errorsCopy);
+    return valid;
   }
 
   return (
@@ -64,11 +90,16 @@ const LoginComponent = () => {
                     <input
                       type="text"
                       name="username"
-                      className="form-control"
+                      className={`form-control ${
+                        errors.username ? "is-invalid" : ""
+                      }`}
                       placeholder="Enter your username"
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
                     ></input>
+                    {errors.username && (
+                      <div className="invalid-feedback"> {errors.username}</div>
+                    )}
                   </div>
                 </div>
 
@@ -78,11 +109,16 @@ const LoginComponent = () => {
                     <input
                       type="password"
                       name="password"
-                      className="form-control"
+                      className={`form-control ${
+                        errors.password ? "is-invalid" : ""
+                      }`}
                       placeholder="Enter your password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                     ></input>
+                    {errors.password && (
+                      <div className="invalid-feedback"> {errors.password}</div>
+                    )}
                   </div>
                 </div>
                 <div className="form-group mb-3">

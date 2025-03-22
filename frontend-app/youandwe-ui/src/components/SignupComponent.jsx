@@ -22,6 +22,7 @@ const SignupComponent = () => {
       signupAPICall(signup)
         .then((response) => {
           console.log(response.data);
+          alert(response.data);
           navigator("/login");
         })
         .catch((error) => {
@@ -53,6 +54,16 @@ const SignupComponent = () => {
     } else {
       errorsCopy.email = "Email is required";
       valid = false;
+      console.log(valid);
+    }
+    if (!email.trim() && !isEmailValid) {
+      errorsCopy.email = "Invalid email format.";
+      valid = false;
+      console.log(valid);
+    } else {
+      errorsCopy.email = "Email is required";
+      valid = false;
+      console.log(valid);
     }
     if (password.trim()) {
       errorsCopy.password = "";
@@ -64,6 +75,11 @@ const SignupComponent = () => {
     setErrors(errorsCopy);
     return valid;
   }
+  const isEmailValid = (email) => {
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    console.log(emailPattern.test(email));
+    return emailPattern.test(email);
+  };
   return (
     <div className="container">
       <br></br>
@@ -88,7 +104,7 @@ const SignupComponent = () => {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                     ></input>
-                    {errors.name && (
+                    {errors.name && !name && (
                       <div className="invalid-feedback">{errors.name}</div>
                     )}
                   </div>
@@ -106,7 +122,7 @@ const SignupComponent = () => {
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
                     ></input>
-                    {errors.username && (
+                    {errors.username && !username && (
                       <div className="invalid-feedback">{errors.username}</div>
                     )}
                   </div>
@@ -122,7 +138,21 @@ const SignupComponent = () => {
                       }`}
                       placeholder="Enter your email address"
                       value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+
+                        if (!isEmailValid(e.target.value)) {
+                          setErrors({
+                            name: "",
+                            username: "",
+                            email: "Invalid email format.",
+                            password: "",
+                          });
+                          console.log("invalid");
+                        } else {
+                          setErrors("");
+                        }
+                      }}
                     ></input>
                     {errors.email && (
                       <div className="invalid-feedback"> {errors.email}</div>
@@ -142,7 +172,7 @@ const SignupComponent = () => {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                     ></input>
-                    {errors.password && (
+                    {errors.password && !password && (
                       <div className="invalid-feedback">{errors.password}</div>
                     )}
                   </div>

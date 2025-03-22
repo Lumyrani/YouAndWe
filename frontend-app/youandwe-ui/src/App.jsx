@@ -7,6 +7,7 @@ import LoginComponent from "./components/LoginComponent";
 import SignupComponent from "./components/SignupComponent";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ListHelpRequestComponent from "./components/ListHelpRequest.jsx";
+import HomeComponent from "./components/HomeComponent.jsx";
 
 function App() {
   function AuthenticatedRoute({ children }) {
@@ -24,7 +25,8 @@ function App() {
         <HeaderComponent />
         <Routes>
           {/* http://localhost:8080 */}
-          <Route path="/" element={<LoginComponent />}></Route>
+          <Route path="/" element={<HomeComponent />}></Route>
+          <Route path="/login" element={<LoginComponent />}></Route>
           <Route
             path="/helpRequest"
             element={

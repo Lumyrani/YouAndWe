@@ -26,6 +26,7 @@ public class AuthController {
     public ResponseEntity<String> signup(@RequestBody SignupDto signupDto){
         String response = authService.signup(signupDto);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+        
     }
 
     // Build Login REST API

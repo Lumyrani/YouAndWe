@@ -18,6 +18,7 @@ import com.example.youandwe.repository.RoleRepository;
 import com.example.youandwe.repository.UserRepository;
 import com.example.youandwe.security.JwtTokenProvider;
 import com.example.youandwe.service.AuthService;
+import com.example.youandwe.service.EmailService;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -32,6 +33,7 @@ public class AuthServiceImpl implements AuthService {
     private PasswordEncoder passwordEncoder;
     private AuthenticationManager authenticationManager;
     private JwtTokenProvider jwtTokenProvider;
+    private EmailService emailService;
 
     @Override
     public String signup(SignupDto signupDto) {
@@ -59,8 +61,15 @@ public class AuthServiceImpl implements AuthService {
         user.setRoles(roles);
 
         userRepository.save(user);
+     // Send welcome email
+        String subject = "Welcome to Our Application!";
+        String body = "Dear " + user.getUsername() + ",\n\nYour YouAndWe account was successfully created with the following credentials: Username:"+ user.getUsername() +"Thank you for transforming lives with YouAndWe!!";
+        emailService.sendWelcomeEmail(user.getEmail(), subject, body);
+        return "Finish setting up your account\r\n"
+        		+ "\r\n"
+        		+ "Information on how to activate your account has been sent to your email address. Please check your inbox and spam folders.";
 
-        return "User Registered Successfully!.";
+
     }
 
     @Override

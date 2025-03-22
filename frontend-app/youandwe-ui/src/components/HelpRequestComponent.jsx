@@ -143,7 +143,12 @@ const HelpRequestComponent = () => {
                     }`}
                     placeholder="Enter your issue"
                     value={help}
-                    onChange={(e) => setHelp(e.target.value)}
+                    onChange={(e) => {
+                      setHelp(e.target.value);
+                      if (e[name]) {
+                        delete errors(name);
+                      }
+                    }}
                   ></input>
                   {errors.help && (
                     <div className="invalid-feedback"> {errors.help} </div>
